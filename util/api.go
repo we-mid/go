@@ -8,7 +8,9 @@ import (
 var (
 	Err400 = NewStatusError(400, nil)
 	Err401 = NewStatusError(401, nil)
+	Err404 = NewStatusError(404, nil)
 	Err405 = NewStatusError(405, nil)
+	Err429 = NewStatusError(429, nil)
 	Err500 = NewStatusError(500, nil)
 
 	EmptyRes = struct{}{}

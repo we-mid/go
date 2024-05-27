@@ -1,14 +1,9 @@
 package util
 
-import "fmt"
-
-var statusMsgs = map[int]string{
-	// ...
-	400: "Bad Request",
-	401: "Unauthorized",
-	405: "Method Not Allowed",
-	500: "Internal Error",
-}
+import (
+	"fmt"
+	"net/http"
+)
 
 // StatusError 是一个自定义错误类型，包含了 HTTP 状态码
 type StatusError struct {
@@ -21,7 +16,7 @@ func (e *StatusError) Error() string {
 	if e.Err != nil {
 		return fmt.Sprintf("%d: %v", e.Status, e.Err)
 	}
-	if msg, ok := statusMsgs[e.Status]; ok {
+	if msg := http.StatusText(e.Status); msg != "" {
 		return fmt.Sprintf("%d: %s", e.Status, msg)
 	}
 	return fmt.Sprintf("%d", e.Status)
@@ -33,4 +28,8 @@ func NewStatusError(status int, err error) *StatusError {
 		Status: status,
 		Err:    err,
 	}
+}
+
+func NewStatusErrorf(status int, format string, params ...any) *StatusError {
+	return NewStatusError(status, fmt.Errorf(format, params...))
 }
