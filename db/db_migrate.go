@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/we-task/Todo-as-a-Service/x/util"
+	"gitee.com/we-mid/go/util"
 )
 
 const (

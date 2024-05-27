@@ -5,8 +5,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/we-task/Todo-as-a-Service/x/session"
-	"github.com/we-task/Todo-as-a-Service/x/util"
+	"gitee.com/we-mid/go/session"
+	"gitee.com/we-mid/go/util"
 )
 
 const (

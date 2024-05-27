@@ -3,7 +3,7 @@ package db_sqlite
 import (
 	"database/sql"
 
-	"github.com/we-task/Todo-as-a-Service/x/db"
+	"gitee.com/we-mid/go/db"
 
 	// _ "github.com/go-sql-driver/mysql"
 	// sqlite3 driver for go using database/sql

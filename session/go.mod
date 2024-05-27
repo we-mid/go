@@ -1,3 +1,3 @@
-module github.com/we-task/Todo-as-a-Service/x/session
+module gitee.com/we-mid/go/session
 
 go 1.21.1

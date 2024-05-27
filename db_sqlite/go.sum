@@ -1,3 +1,7 @@
+gitee.com/we-mid/go/db v0.0.0-20240527065232-86e2e7c70169 h1:L746ts2n38Wd7chGZxeAq/MGNcpw/F8Wr9zpDVuA1iQ=
+gitee.com/we-mid/go/db v0.0.0-20240527065232-86e2e7c70169/go.mod h1:1043dCkD1OJpomPFpUTGX+NFvUTr5r3A9XbrZO6tZvA=
+gitee.com/we-mid/go/util v0.0.0-20240527065232-86e2e7c70169 h1:hgebAfwNRx2z9mdQAyCugnRlnicEpIN5crWv5eLmwws=
+gitee.com/we-mid/go/util v0.0.0-20240527065232-86e2e7c70169/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
 github.com/dustin/go-humanize v1.0.1 h1:GzkhY7T5VNhEkwH0PVJgjz+fX1rhBrR7pRT3mDkpeCY=
 github.com/dustin/go-humanize v1.0.1/go.mod h1:Mu1zIs6XwVuF/gI1OepvI0qD18qycQx+mFykh5fBlto=
 github.com/glebarez/go-sqlite v1.22.0 h1:uAcMJhaA6r3LHMTFgP0SifzgXg46yJkgxqyuyec+ruQ=
