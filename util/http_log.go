@@ -10,17 +10,17 @@ import (
 )
 
 var (
-	isGatewayTrusted = true
+	timeFormat = os.Getenv("HTTPLOG_TIMEFORMAT")
 )
 
 func init() {
-	if os.Getenv("GW_TRUSTED") == "0" {
-		isGatewayTrusted = false
+	if timeFormat == "" {
+		timeFormat = "01/02 15:04" // 'MM/DD HH:mm'
 	}
 }
 
 func HttpLog(r *http.Request, start time.Time, status int, err error) {
-	layout := "[req] %s %s %s %dms %d %s\n"
+	layout := "%s [req] %s %s %s %dms %d %s\n"
 	message := ""
 	if err != nil && !errors.Is(err, ErrHandledAndBreak) {
 		message = err.Error()
@@ -30,31 +30,16 @@ func HttpLog(r *http.Request, start time.Time, status int, err error) {
 		path += "?" + r.URL.RawQuery
 	}
 	params := []any{
-		GetClientIP(r),
+		time.Now().Format(timeFormat),
+		FormatIPList(r),
 		r.Method,
 		path,
 		time.Since(start).Milliseconds(),
 		status,
 		message,
 	}
-	fmt.Printf(layout, params...)
+	fmt.Printf(layout, params...) // to stdout
 	if message != "" {
-		log.Printf(layout, params...)
+		log.Printf(layout, params...) // to stderr
 	}
-}
-
-// Correct way of getting Client's IP Addresses from http.Request
-// https://stackoverflow.com/questions/27234861/correct-way-of-getting-clients-ip-addresses-from-http-request
-func GetClientIP(r *http.Request) string {
-	IPAddress := ""
-	if isGatewayTrusted {
-		IPAddress = r.Header.Get("X-Real-Ip")
-		if IPAddress == "" {
-			IPAddress = r.Header.Get("X-Forwarded-For")
-		}
-	}
-	if IPAddress == "" {
-		IPAddress = r.RemoteAddr
-	}
-	return IPAddress
 }
