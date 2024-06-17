@@ -19,7 +19,7 @@ var (
 func SendErrText(w http.ResponseWriter, err error) {
 	status := http.StatusInternalServerError
 	if e, ok := err.(*StatusError); ok {
-		status = e.Status
+		status = e.Status()
 	}
 	http.Error(w, err.Error(), status)
 }
@@ -30,8 +30,8 @@ func SendResText(w http.ResponseWriter, res string) {
 
 func SendErr(w http.ResponseWriter, err error) {
 	status := http.StatusInternalServerError
-	if e, ok := err.(*StatusError); ok {
-		status = e.Status
+	if e, ok := err.(IStatusError); ok {
+		status = e.Status()
 	}
 	w.Header().Set("Content-Type", "application/json")
 	bytes, _ := json.Marshal(map[string]any{

@@ -40,6 +40,6 @@ func HttpLog(r *http.Request, start time.Time, status int, err error) {
 	}
 	fmt.Printf(layout, params...) // to stdout
 	if message != "" {
-		log.Printf(layout, params...) // to stderr
+		log.Printf(layout[3:], params[1:]...) // to stderr
 	}
 }

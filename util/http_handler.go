@@ -16,9 +16,9 @@ func HandlerWrap(
 			if errors.Is(err, ErrHandledAndBreak) {
 				HttpLog(r, start, 200, err)
 			} else {
-				if e, ok := err.(*StatusError); ok && e.Status < 500 {
+				if e, ok := err.(IStatusError); ok && e.Status() < 500 {
 					SendErr(w, err)
-					HttpLog(r, start, e.Status, err)
+					HttpLog(r, start, e.Status(), err)
 				} else {
 					// protect error messages for 5xx
 					SendErr(w, Err500)
