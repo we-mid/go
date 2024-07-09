@@ -25,3 +25,8 @@ func SortedKeys[M ~map[K]V, K comparable, V any](m M, less LessFunc[K]) []K {
 	})
 	return keys
 }
+
+// 用法 util.RangeMapSorted(myMap, util.StrLess, func (...) bool {...})
+func StrLess(a, b string) bool {
+	return a < b
+}

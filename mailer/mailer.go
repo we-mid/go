@@ -2,34 +2,53 @@ package mailer
 
 import (
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"net/mail"
 	"net/smtp"
 	"os"
+	"strings"
 )
 
 // SSL/TLS Email Example
 // https://gist.github.com/chrisgillis/10888032
+// https://portswigger.net/kb/issues/00200800_smtp-header-injection (security)
 // https://bastengao.com/blog/2019/11/go-smtp-ssl.html
 
 var (
+	// 定义发件人、收件人列表、SMTP服务器信息等
 	SMTP_HOST = os.Getenv("SMTP_HOST")
 	SMTP_PORT = os.Getenv("SMTP_PORT")
-	SMTP_USER = os.Getenv("SMTP_USER")
 	SMTP_PASS = os.Getenv("SMTP_PASS")
+	SMTP_USER = os.Getenv("SMTP_USER")
+	SMTP_NICK = os.Getenv("SMTP_NICK")
+
+	SmtpFrom = mail.Address{Name: SMTP_NICK, Address: SMTP_USER}
 )
 
-func SendMail(from, to mail.Address, subject, body string) error {
+func SendMail(body, subject string, toList []mail.Address, from *mail.Address) error {
+	if from == nil {
+		from = &SmtpFrom
+	}
+	var toStrList []string
+	for _, to := range toList {
+		toStrList = append(toStrList, to.String())
+	}
 	// Setup headers
 	headers := make(map[string]string)
 	headers["From"] = from.String()
-	headers["To"] = to.String()
+	headers["To"] = strings.Join(toStrList, ", ")
 	headers["Subject"] = subject
 
 	// Setup message
 	message := ""
 	for k, v := range headers {
-		message += fmt.Sprintf("%s: %s\r\n", k, v)
+		line := fmt.Sprintf("%s: %s", k, v)
+		// security assurance: RFC 5321
+		if err := validateLine(line); err != nil {
+			return err
+		}
+		message += line + "\r\n"
 	}
 	message += "\r\n" + body
 
@@ -63,8 +82,10 @@ func SendMail(from, to mail.Address, subject, body string) error {
 	if err = c.Mail(from.Address); err != nil {
 		return err
 	}
-	if err = c.Rcpt(to.Address); err != nil {
-		return err
+	for _, to := range toList {
+		if err = c.Rcpt(to.Address); err != nil {
+			return err
+		}
 	}
 	// Data
 	w, err := c.Data()
@@ -80,4 +101,13 @@ func SendMail(from, to mail.Address, subject, body string) error {
 		return err
 	}
 	return c.Quit()
+}
+
+// validateLine checks to see if a line has CR or LF as per RFC 5321.
+// https://github.com/golang/go/blob/87ec2c959c73e62bfae230ef7efca11ec2a90804/src/net/smtp/smtp.go#L429
+func validateLine(line string) error {
+	if strings.ContainsAny(line, "\n\r") {
+		return errors.New("[mailer] smtp: A line must not contain CR or LF")
+	}
+	return nil
 }
