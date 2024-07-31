@@ -1,9 +1,22 @@
 package util
 
 import (
+	"fmt"
 	"net"
 	"strings"
 )
+
+func IsIPInCIDR(ip, cidr string) (bool, error) {
+	// 解析CIDR
+	_, ipNet, err := net.ParseCIDR(cidr)
+	if err != nil {
+		return false, fmt.Errorf("net.ParseCIDR: %w", err)
+	}
+	// 将IP地址字符串转换为net.IP类型
+	ipObj := net.ParseIP(ip)
+	// 检查IP是否在CIDR区间内
+	return ipNet.Contains(ipObj), nil
+}
 
 func ExtractIP(addr string) string {
 	// 尝试将remoteAddr解析为TCPAddr，如果成功则直接获取IP
