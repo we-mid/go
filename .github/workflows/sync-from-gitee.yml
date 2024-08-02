@@ -1,0 +1,30 @@
+name: Sync from Gitee
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '20 5 * * *' # UTC时区; 每天执行一次
+
+jobs:
+  sync:
+    if: github.ref == 'refs/heads/main' # 仅当在main分支上时才执行
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pull changes from Gitee
+        run: |
+          git remote add gitee https://gitee.com/we-mid/go.git
+          git fetch gitee main
+
+          # todo: 暂未解决: 如无变更应避免操作 从而持续破坏提交记录
+
+          # fix: Committer identity unknown
+          git config user.email "actions@github.com"
+          git config user.name "GitHub Actions"
+
+          # 避免额外提交: Merge remote-tracking branch 'xx/xxx'
+          # git merge gitee/main --allow-unrelated-histories
+          # git push origin main
+          # 使用 rebase 而不是 merge
+          git rebase gitee/main
+          git push origin main --force-with-lease
