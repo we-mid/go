@@ -14,7 +14,7 @@ TC_SDK_APP_ID=1xxxxxx
 ```go
 // sms_job.go
 import (
-  // 自动加载.env环境变量
+	// 自动加载.env环境变量
 	_ "github.com/joho/godotenv/autoload"
 	// 引入tc_sms
 	"gitee.com/we-mid/go/tc_sms"
@@ -39,7 +39,7 @@ func smsJob() {
 	var params []string
 	// ...
 	// 发送前预览完整文本，自动计算fee
-	result, n, fee := tc_sms.SmsPreview(template, params)
+	result, n, fee := tc_sms.Preview(template, params)
 	log.Println("smsJob preview:", result)
 	log.Printf("smsJob preview: n=%d, fee=%d\n", n, fee)
 	// 针对fee设置风控门槛
@@ -48,7 +48,7 @@ func smsJob() {
 		return
 	}
 	// 发送短信
-	res, err := tc_sms.SmsSend(signName, templateId, params, phones)
+	res, err := tc_sms.Send(signName, templateId, params, phones)
 	if err != nil {
 		log.Println("smsJob error:", err)
 		return
@@ -99,6 +99,6 @@ func truncateString(s string, length int) string {
 ### 参考链接
 
 - 腾讯云-短信-国内短信-正文模板管理：https://console.cloud.tencent.com/smsv2/csms-template
-- 关于单条短信计费fee：https://console.cloud.tencent.com/smsv2/csms-template/create
+- 关于单条短信计费fee，按67字/条分隔成多条计费：https://console.cloud.tencent.com/smsv2/csms-template/create
 - 非验证码短信：每个变量取值最多支持6个字符：https://cloud.tencent.cn/document/product/382/52075
 - 参考了GitHub上的代码：https://github.com/ixre/go2o/blob/2c7f7c875501432b008b84636ab41cdac5527bd1/core/sp/tencent/tecent_sms.go

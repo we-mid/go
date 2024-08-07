@@ -11,7 +11,7 @@ import (
 
 // 参考了GitHub上的代码
 // https://github.com/ixre/go2o/blob/2c7f7c875501432b008b84636ab41cdac5527bd1/core/sp/tencent/tecent_sms.go
-func SmsSend(signName, templateId string, params, phones []string) (*sms.SendSmsResponse, error) {
+func Send(signName, templateId string, params, phones []string) (*sms.SendSmsResponse, error) {
 	// 硬编码密钥到代码中有可能随代码泄露而暴露，有安全隐患，并不推荐。
 	// 为了保护密钥安全，建议将密钥设置在环境变量中或者配置文件中，请参考本文凭证管理章节。
 	credential := common.NewCredential(

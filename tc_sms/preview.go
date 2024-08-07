@@ -13,7 +13,7 @@ import (
 const nPerFee = 67
 
 // 发送前预览完整文本，自动计算fee
-func SmsPreview(template string, params []string) (string, int, int) {
+func Preview(template string, params []string) (string, int, int) {
 	out := replacePlaceholders(template, params)
 	n := len([]rune(out)) // 注意是 字符数
 	return out, n, int(math.Ceil(float64(n) / float64(nPerFee)))
