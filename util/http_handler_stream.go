@@ -1,6 +1,7 @@
 package util
 
 import (
+	"context"
 	"errors"
 	"net/http"
 	"time"
@@ -36,8 +37,14 @@ func StreamHandlerWrap(
 		}); err != nil {
 			if errors.Is(err, ErrHandledAndBreak) {
 				HttpLog(r, start, 200, err)
-			} else if errors.Is(err, StreamEof) {
+				// } else if errors.Is(err, StreamEof) {
+			} else if IsErrorLike(err, StreamEof) {
 				// noop
+				HttpLog(r, start, 200, nil)
+			} else if errors.Is(err, context.DeadlineExceeded) {
+				// ignore
+				w.Write([]byte("..."))
+				flusher.Flush()
 				HttpLog(r, start, 200, nil)
 			} else {
 				if e, ok := err.(IStatusError); ok && e.Status() < 500 {
