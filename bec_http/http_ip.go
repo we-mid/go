@@ -1,10 +1,12 @@
-package util
+package bec_http
 
 import (
 	"fmt"
 	"net/http"
 	"os"
 	"strings"
+
+	"gitee.com/we-mid/go/util"
 )
 
 var (
@@ -41,7 +43,7 @@ func GetClientAddr(r *http.Request) string {
 	return r.RemoteAddr
 }
 func GetClientIP(r *http.Request) string {
-	return ExtractIP(GetClientAddr(r))
+	return util.ExtractIP(GetClientAddr(r))
 }
 
 func GetHeaderIpsUnsafe(r *http.Request) string {

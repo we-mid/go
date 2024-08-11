@@ -1,4 +1,4 @@
-package util
+package bec_http
 
 import (
 	"fmt"

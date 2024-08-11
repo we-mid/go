@@ -1,10 +1,12 @@
-package util
+package bec_http
 
 import (
 	"context"
 	"errors"
 	"net/http"
 	"time"
+
+	"gitee.com/we-mid/go/util"
 )
 
 var StreamEof = errors.New("StreamEof")
@@ -38,7 +40,7 @@ func StreamHandlerWrap(
 			if errors.Is(err, ErrHandledAndBreak) {
 				HttpLog(r, start, 200, err)
 				// } else if errors.Is(err, StreamEof) {
-			} else if IsErrorLike(err, StreamEof) {
+			} else if util.IsErrorLike(err, StreamEof) {
 				// noop
 				HttpLog(r, start, 200, nil)
 			} else if errors.Is(err, context.DeadlineExceeded) {
