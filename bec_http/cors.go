@@ -16,7 +16,7 @@ var corsHeaders = map[string]string{
 
 // Golang CORS Guide: What It Is and How to Enable It
 // https://www.stackhawk.com/blog/golang-cors-guide-what-it-is-and-how-to-enable-it/
-func EnableCors(w http.ResponseWriter, r *http.Request) error {
+func EnableCORS(w http.ResponseWriter, r *http.Request) error {
 	if len(r.Header["Origin"]) < 1 {
 		return nil
 	}

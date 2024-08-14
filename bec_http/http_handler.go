@@ -6,6 +6,15 @@ import (
 	"time"
 )
 
+func CORSHandlerWrap(logic Logic) Handler {
+	return HandlerWrap(func(w http.ResponseWriter, r *http.Request) (any, error) {
+		if err := EnableCORS(w, r); err != nil {
+			return nil, err
+		}
+		return logic(w, r)
+	})
+}
+
 func HandlerWrap(logic Logic) Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
