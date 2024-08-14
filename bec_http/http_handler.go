@@ -6,9 +6,7 @@ import (
 	"time"
 )
 
-func HandlerWrap(
-	logic func(w http.ResponseWriter, r *http.Request) (any, error),
-) func(w http.ResponseWriter, r *http.Request) {
+func HandlerWrap(logic Logic) Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		res, err := logic(w, r)

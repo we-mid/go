@@ -11,10 +11,7 @@ import (
 
 var StreamEof = errors.New("StreamEof")
 
-func StreamHandlerWrap(
-	contentType string,
-	logic func(w http.ResponseWriter, r *http.Request, onBytes func([]byte)) error,
-) func(w http.ResponseWriter, r *http.Request) {
+func StreamHandlerWrap(contentType string, logic LogicStream) Handler {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		var headerSet bool
