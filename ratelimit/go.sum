@@ -1,6 +1,2 @@
-gitee.com/we-mid/go/bec_http v0.0.0-20240811133557-5b70baf5d6f9 h1:oM7gh1hRKoWNzck36N0pN/gtljk6+1fEqwxesntsZaE=
-gitee.com/we-mid/go/bec_http v0.0.0-20240811133557-5b70baf5d6f9/go.mod h1:8IYvQTHJRPHVnmwewi1wCZR6Y5sXbITqCnZ58ldA5Jg=
-gitee.com/we-mid/go/util v0.0.0-20240811133557-5b70baf5d6f9 h1:hxKyn4HeWGEjCawN5eYa0AeS03U+rvpCpfylqZVq8AI=
-gitee.com/we-mid/go/util v0.0.0-20240811133557-5b70baf5d6f9/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
-golang.org/x/time v0.5.0 h1:o7cqy6amK/52YcAKIPlM3a+Fpj35zvRj2TP+e1xFSfk=
-golang.org/x/time v0.5.0/go.mod h1:3BpzKBy/shNhVucY/MWOyx10tF3SFh9QdLuxbVysPQM=
+golang.org/x/time v0.6.0 h1:eTDhh4ZXt5Qf0augr54TN6suAUudPcawVZeIAPU7D4U=
+golang.org/x/time v0.6.0/go.mod h1:3BpzKBy/shNhVucY/MWOyx10tF3SFh9QdLuxbVysPQM=

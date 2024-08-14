@@ -55,3 +55,13 @@ func DatePrintln(args ...any) (int, error) {
 	xargs = append(xargs, args...)
 	return fmt.Println(xargs...)
 }
+
+func NormalizeTimestamp(t int64) int64 {
+	if IsLikeJsTimestamp(t) {
+		return t / 1000
+	}
+	return t
+}
+func IsLikeJsTimestamp(t int64) bool {
+	return t >= 1000000000000
+}
