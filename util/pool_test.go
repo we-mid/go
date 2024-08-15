@@ -28,8 +28,8 @@ func TestPool(t *testing.T) {
 	wg.Add(n)
 	for i := 0; i < n; i++ {
 		go func() {
+			defer wg.Done()
 			runOnce(t)
-			wg.Done()
 		}()
 	}
 	wg.Wait()
