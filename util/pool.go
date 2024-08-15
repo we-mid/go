@@ -102,20 +102,21 @@ func (p *Pool[T]) Destroy() error {
 		// 解决这个问题的方法是在闭包中传递每个 conn 的副本。
 		c := conn // 捕获当前迭代的值
 		// note: loopclosure: loop variable conn captured by func literal
-		go func(c T) {
-			defer wg.Done()
-			if e := p.free(c); e != nil {
-				if err == nil {
-					err = e // return the first error
-				}
-				return
+		// go func(c T) {
+		// 	defer wg.Done()
+		if e := p.free(c); e != nil {
+			if err == nil {
+				err = e // return the first error
 			}
-			// fix: fatal error: concurrent map writes (1)
-			mu.Lock()
-			defer mu.Unlock()
-			delete(p.refs, c)
-		}(c)
+			continue
+		}
+		// fix: fatal error: concurrent map writes (1)
+		mu.Lock()
+		// defer mu.Unlock()
+		delete(p.refs, c)
+		mu.Unlock()
+		// }(c)
 	}
-	wg.Wait()
+	// wg.Wait()
 	return err
 }
