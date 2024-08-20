@@ -1,15 +1,15 @@
 package util
 
 import (
-	"log"
 	"sync"
 	"time"
 )
 
 // UIDCache 结构体用于存储UID及其接收时间
 type UIDCache struct {
-	// sync.RWMutex
-	sync.Mutex
+	// mu sync.RWMutex
+	mu         sync.Mutex
+	cancel     chan struct{}
 	store      map[string]time.Time // 存储UID及其接收时间
 	timeWindow time.Duration        // 时间窗口，例如2分钟
 }
@@ -17,17 +17,22 @@ type UIDCache struct {
 // NewUIDCache 创建一个新的UIDCache实例
 func NewUIDCache(timeWindow time.Duration) *UIDCache {
 	c := &UIDCache{
+		cancel:     make(chan struct{}),
 		store:      make(map[string]time.Time),
 		timeWindow: timeWindow,
 	}
-	c.StartGC()
+	go c.keepGC()
 	return c
+}
+
+func (c *UIDCache) Destroy() {
+	c.cancel <- struct{}{}
 }
 
 // Add 尝试添加一个UID到存储中，如果UID在过去的时间窗口内已存在，则返回false表示幂等
 func (c *UIDCache) Add(UID string) bool {
-	c.Lock()
-	defer c.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 
 	// 检查UID是否已经在时间窗口内存在
 	if t, exists := c.store[UID]; exists {
@@ -45,20 +50,21 @@ func (c *UIDCache) Add(UID string) bool {
 }
 
 // StartGC 启动垃圾回收，定期清理过期的UID
-func (c *UIDCache) StartGC() {
-	go func() {
-		// While Tick is useful for clients that have no need to shut down the Ticker, be aware that
-		// without a way to shut it down the underlying Ticker cannot be recovered by the garbage collector; it "leaks".
-		for range time.Tick(2 * c.timeWindow) {
+func (c *UIDCache) keepGC() {
+	for {
+		select {
+		case <-c.cancel:
+			return // exit loop
+		case <-time.After(2 * c.timeWindow):
 			c.cleanExpired()
 		}
-	}()
+	}
 }
 
 // cleanExpired 清理过期的UID
 func (c *UIDCache) cleanExpired() {
-	c.Lock()
-	defer c.Unlock()
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	var n, total int
 	currentTime := time.Now()
 	for UID, t := range c.store {
@@ -68,9 +74,9 @@ func (c *UIDCache) cleanExpired() {
 		}
 		total++
 	}
-	if total > 0 {
-		log.Printf("[UIDCache] 已清理 %d / %d 个key\n", n, total)
-	}
+	// if total > 0 {
+	// 	log.Printf("[UIDCache] 已清理 %d / %d 个key\n", n, total)
+	// }
 }
 
 // func main() {
