@@ -2,6 +2,7 @@ package ip2r
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -55,7 +56,9 @@ func Close() {
 func Load(dbPath string) error {
 	Close()
 	if err := node.Setup(); err != nil {
-		return err
+		// return err
+		log.Println("[ip2r] [可选服务] node_ip2r连接失败", err) // 非核心必选依赖
+		// skip
 	}
 	var err error
 	// https://github.com/lionsoul2014/ip2region/tree/master/binding/golang

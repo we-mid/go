@@ -7,7 +7,7 @@
 
 ## 运行Node.js进程依赖（可选，+IPv6支持，内存占用145MB左右）
 
-当前 [node_ip2r](https://gitee.com/we-mid/node_ip2r) 提供的服务交互，使用的是 Unix Socket IPC 策略实现：<br>
+当前 [node_ip2r](https://gitee.com/we-mid/node_ip2r) 提供的服务交互，使用的是 Unix Socket IPC 策略实现
 
 ```sh
 git clone git@gitee.com:we-mid/node_ip2r.git
