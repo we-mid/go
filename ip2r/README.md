@@ -1,4 +1,4 @@
-# `ip2r` IP归属地信息查询 Go语言SDK
+# `ip2r` IP归属地离线查询 Go语言SDK
 
 同时集成了两个库，支持IPv4+IPv6：
 
@@ -19,8 +19,8 @@ node server
 ## 下载ip2region.xdb，运行测试
 
 ```sh
-git clone git@gitee.com:we-mid/go/ip2r.git
-cd ip2r
+git clone git@gitee.com:we-mid/go.git
+cd go/ip2r
 # 下载 ip2region.xdb 到本地
 # 参考 https://github.com/lionsoul2014/ip2region
 go test
