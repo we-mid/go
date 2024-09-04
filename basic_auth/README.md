@@ -26,9 +26,7 @@ func main() {
 	http.HandleFunc("/api/bar", util.HandlerWrap(apiBar))
 	// 页面路由，创建一个文件服务器
 	fs := http.FileServer(http.Dir("./public"))
-	http.HandleFunc("/", basic_auth.Wrap(func(w http.ResponseWriter, r *http.Request) {
-		fs.ServeHTTP(w, r)
-	}))
+	http.HandleFunc("/", basic_auth.Wrap(fs.ServeHTTP))
 	// ...
 }
 

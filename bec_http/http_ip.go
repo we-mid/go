@@ -34,7 +34,7 @@ func GetClientAddr(r *http.Request) string {
 		if len(ips) > 0 {
 			// 网关追加X-Forwarded-For请求头的方式是向右追加，并且最左边是最原始客户端的IP地址。
 			// seg := strings.TrimSpace(ips[0])
-			seg := strings.TrimSpace(ips[len(ips)-1])
+			seg := strings.TrimSpace(ips[len(ips)-1]) // 注意这里取的是最接近直接请求端而非最接近真实用户
 			if seg != "" {
 				return seg
 			}

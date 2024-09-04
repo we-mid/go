@@ -14,6 +14,7 @@ var ErrHandledAndBreak = errors.New("handled and break")
 var (
 	Err400 = NewStatusError(400, nil)
 	Err401 = NewStatusError(401, nil)
+	Err403 = NewStatusError(403, nil)
 	Err404 = NewStatusError(404, nil)
 	Err405 = NewStatusError(405, nil)
 	Err429 = NewStatusError(429, nil)
