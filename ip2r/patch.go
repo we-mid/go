@@ -14,8 +14,8 @@ type segment struct {
 var segs []segment
 
 func patch(ip string) string {
+	v := ipToInt(ip)
 	for _, s := range segs {
-		v := ipToInt(ip)
 		if v >= s.left && v <= s.right {
 			return s.region
 		}
