@@ -43,9 +43,26 @@ func GetClientAddr(r *http.Request) string {
 	return r.RemoteAddr
 }
 func GetClientIP(r *http.Request) string {
-	return util.ExtractIP(GetClientAddr(r))
+	return util.ExtractAddrIP(GetClientAddr(r))
 }
 
+func GetMaybeRealAddr(r *http.Request) string {
+	// if isGatewayTrusted {
+	ipsStr := GetHeaderIpsUnsafe(r)
+	ips := strings.Split(ipsStr, ",")
+	if len(ips) > 0 {
+		// 网关追加X-Forwarded-For请求头的方式是向右追加，并且最左边是最原始客户端的IP地址。
+		seg := strings.TrimSpace(ips[0])
+		if seg != "" {
+			return seg
+		}
+	}
+	// }
+	return r.RemoteAddr
+}
+func GetMaybeRealIP(r *http.Request) string {
+	return util.ExtractAddrIP(GetMaybeRealAddr(r))
+}
 func GetHeaderIpsUnsafe(r *http.Request) string {
 	ips := r.Header.Get("X-Forwarded-For")
 	if ips == "" {

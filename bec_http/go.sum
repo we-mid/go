@@ -1,6 +1,6 @@
 gitee.com/we-mid/go/ratelimit v0.0.0-20240814094913-e4842229d27c h1:cs/fsav5u7V2GWgrukakaU170b4AyV2r9meISb/3gSE=
 gitee.com/we-mid/go/ratelimit v0.0.0-20240814094913-e4842229d27c/go.mod h1:eeFv73NPvjI1J5sik+/mA1yjcluDSW0eebKOSJM7Dw0=
-gitee.com/we-mid/go/util v0.0.0-20240814094913-e4842229d27c h1:5G9CbpBpSoeOzUn5ET5cNFW40uPyz5uLZxsyHQACYRo=
-gitee.com/we-mid/go/util v0.0.0-20240814094913-e4842229d27c/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
+gitee.com/we-mid/go/util v0.0.0-20240906100352-a79e5097e01b h1:+DWAanI5Kv7rRa+HCxrfRrnyup7oFFqcOv+k0m0SEQA=
+gitee.com/we-mid/go/util v0.0.0-20240906100352-a79e5097e01b/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
 golang.org/x/time v0.5.0 h1:o7cqy6amK/52YcAKIPlM3a+Fpj35zvRj2TP+e1xFSfk=
 golang.org/x/time v0.5.0/go.mod h1:3BpzKBy/shNhVucY/MWOyx10tF3SFh9QdLuxbVysPQM=

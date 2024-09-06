@@ -4,7 +4,7 @@ go 1.21.1
 
 require (
 	gitee.com/we-mid/go/ratelimit v0.0.0-20240814094913-e4842229d27c
-	gitee.com/we-mid/go/util v0.0.0-20240814094913-e4842229d27c
+	gitee.com/we-mid/go/util v0.0.0-20240906100352-a79e5097e01b
 )
 
 require golang.org/x/time v0.5.0 // indirect
