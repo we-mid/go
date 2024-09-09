@@ -1,9 +1,17 @@
 package util
 
 import (
+	"fmt"
 	"math"
 	"time"
 )
+
+// format of extraTZ: `+0800`, `-0700`
+func TimeParseWithExtraTZ(layout, timeStrWithoutTZ, extraTZ string) (time.Time, error) {
+	l := fmt.Sprintf("%s %s", layout, "-0700")
+	s := fmt.Sprintf("%s %s", timeStrWithoutTZ, extraTZ)
+	return time.Parse(l, s)
+}
 
 // DurationScale takes a time.Duration and a float64 multiplier,
 // returns the duration multiplied by the given multiplier.
