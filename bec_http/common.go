@@ -6,7 +6,7 @@ import (
 )
 
 type Handler func(http.ResponseWriter, *http.Request)
-type Logic func(w http.ResponseWriter, r *http.Request) (any, error)
+type Logic[T any] func(w http.ResponseWriter, r *http.Request) (T, error)
 type LogicStream func(w http.ResponseWriter, r *http.Request, onBytes func([]byte)) error
 
 var ErrHandledAndBreak = errors.New("handled and break")

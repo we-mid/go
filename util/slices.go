@@ -1,5 +1,9 @@
 package util
 
+func Splice[T any](s []T, pos int, deleteCount int, add []T) []T {
+	return append(s[:pos], append(add, s[pos+deleteCount:]...)...)
+}
+
 // RemoveElements 从 slice 中移除 elements 中的所有元素
 func RemoveElements[T comparable](slice, elements []T) []T {
 	seen := make(map[T]struct{}, len(elements))
