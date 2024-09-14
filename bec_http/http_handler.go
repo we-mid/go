@@ -4,17 +4,14 @@ import (
 	"errors"
 	"net/http"
 	"time"
+
+	"gitee.com/we-mid/go/util"
 )
 
 func CORSHandlerWrap[T any](logic Logic[T]) Handler {
 	return HandlerWrap[T](func(w http.ResponseWriter, r *http.Request) (T, error) {
 		if err := EnableCORS(w, r); err != nil {
-			// fix: compiler: cannot use nil as T value in return statement
-			// return nil, err
-			// fix: compiler: invalid composite literal type T
-			// return T{}, err
-			var zero T
-			return zero, err
+			return util.ZeroValue[T](), err
 		}
 		return logic(w, r)
 	})
