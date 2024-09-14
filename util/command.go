@@ -7,9 +7,13 @@ import (
 	"syscall"
 )
 
+func NewBashCommand(ctx context.Context, command string) *exec.Cmd {
+	return NewPgidCommand(ctx, "bash", "-c", command)
+}
+
 // Why won't Go kill a child process correctly?
 // https://stackoverflow.com/questions/22470193/why-wont-go-kill-a-child-process-correctly/78584235#78584235
-func NewCtxPgidCommand(ctx context.Context, name string, args ...string) *exec.Cmd {
+func NewPgidCommand(ctx context.Context, name string, args ...string) *exec.Cmd {
 	cmd := exec.CommandContext(ctx, name, args...)
 
 	// Killing a child process and all of its children in Go

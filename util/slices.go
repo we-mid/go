@@ -1,7 +1,13 @@
 package util
 
-func Splice[T any](s []T, pos int, deleteCount int, add []T) []T {
-	return append(s[:pos], append(add, s[pos+deleteCount:]...)...)
+// same as Splice but avoid out of range error
+func SpliceLoose[T any](s []T, pos int, deleteCnt int, insertElems []T) []T {
+	pos = min(pos, len(s))
+	deleteCnt = min(deleteCnt, len(s)-pos)
+	return Splice(s, pos, deleteCnt, insertElems)
+}
+func Splice[T any](s []T, pos int, deleteCnt int, insertElems []T) []T {
+	return append(s[:pos], append(insertElems, s[pos+deleteCnt:]...)...)
 }
 
 // RemoveElements 从 slice 中移除 elements 中的所有元素

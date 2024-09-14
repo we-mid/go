@@ -6,7 +6,23 @@ import (
 	"os"
 )
 
-func ScanFile(filename string, readLine func([]byte) error) error {
+func FileTail(filename string, n int) ([][]byte, error) {
+	var lastN [][]byte
+	readLine := func(line []byte) error {
+		if len(lastN) < n {
+			lastN = append(lastN, line)
+		} else {
+			lastN = append(lastN[1:], line) // remove head
+		}
+		return nil
+	}
+	if err := FileScan(filename, readLine); err != nil {
+		return lastN, fmt.Errorf("FileScan: %w", err)
+	}
+	return lastN, nil
+}
+
+func FileScan(filename string, readLine func([]byte) error) error {
 	// 打开文件
 	file, err := os.Open(filename)
 	if err != nil {
