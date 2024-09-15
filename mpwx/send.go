@@ -13,7 +13,7 @@ import (
 const sendUrl = "https://api.weixin.qq.com/cgi-bin/message/template/send"
 
 type rawValueItem struct {
-	value string
+	Value string `json:"value"`
 }
 type rawValueMap map[string]rawValueItem
 
@@ -44,10 +44,10 @@ func (c *MpwxClient) SendTemplateMessage(touser, template_id string, valueMap ma
 	// 设置请求体
 	var reqBody bytes.Buffer
 	rMap := make(rawValueMap)
-	req := sendReq{touser, template_id, rMap}
 	for k, v := range valueMap {
 		rMap[k] = rawValueItem{v}
 	}
+	req := sendReq{touser, template_id, rMap}
 	if err := json.NewEncoder(&reqBody).Encode(req); err != nil {
 		return err
 	}

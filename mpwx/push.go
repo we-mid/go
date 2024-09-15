@@ -12,13 +12,16 @@ func (c *MpwxClient) PushToAdminf(format string, a ...any) {
 }
 func (c *MpwxClient) PushToAdmin(text string) {
 	go func() {
-		if err := c.PushToAdminSync(text); err != nil {
-			log.Println("failed to PushToAdminSync:", err)
+		if err := c.pushToAdmin(text); err != nil {
+			log.Println("failed to pushToAdmin:", err)
 		}
 	}()
 }
 
 // blocking
-func (c *MpwxClient) PushToAdminSync(text string) error {
-	return c.SendTemplateMessage(c.adminUser, c.plainTemplate, map[string]string{text: text})
+func (c *MpwxClient) pushToAdmin(text string) error {
+	return c.SendTemplateMessage(c.adminUser, c.plainTemplate,
+		// 坑！text不加引号就变成了动态取其value作为键值
+		// map[string]string{text: text})
+		map[string]string{"text": text})
 }
