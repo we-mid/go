@@ -36,10 +36,15 @@ import "gitee.com/we-mid/go/ip2r"
 const dbPath = "./ip2region.xdb"
 
 if err := ip2r.Load(dbPath); err != nil {
-	log.Println("[ip2r] 加载失败", err)
+	log.Println("[ip2r] db加载失败", err)
 	return
 }
 defer ip2r.Close()
+
+if err := ip2r.CustomPatch(patchPath); err != nil {
+	log.Println("[ip2r] 自定义patch加载失败", err)
+	return
+}
 
 for {
 	// ...

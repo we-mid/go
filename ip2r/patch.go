@@ -1,6 +1,7 @@
 package ip2r
 
 import (
+	"os"
 	"strings"
 )
 
@@ -24,7 +25,21 @@ func patch(ip string) string {
 }
 
 func init() {
-	lines := strings.Split(patchConfig, "\n")
+	CustomPatchString(patchConfig)
+}
+
+func CustomPatch(filename string) error {
+	bs, err := os.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+	CustomPatchString(string(bs))
+	return nil
+}
+
+// todo: config string => []byte
+func CustomPatchString(config string) {
+	lines := strings.Split(config, "\n")
 	var buf [][2]uint32
 	for _, line := range lines {
 		if strings.HasPrefix(line, "#") { // commenting
