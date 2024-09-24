@@ -51,6 +51,8 @@ func (p *Passwordless) HandleVerify(w http.ResponseWriter, r *http.Request) (any
 			return nil, err
 		}
 	}
+	go p.OnVerify(req.Email, pass)
+
 	return verifyRes{pass}, nil
 }
 
@@ -66,6 +68,8 @@ func (p *Passwordless) HandleAttempt(w http.ResponseWriter, r *http.Request) (an
 	if !lAttempt.Allow(r) {
 		return nil, myErr429
 	}
+	go p.OnAttempt(req.Email)
+
 	code := util.RandomCode(p.LenCode)
 	binding := codeBinding{code, time.Now().Add(p.TTLCode)}
 	p.mu.Lock()

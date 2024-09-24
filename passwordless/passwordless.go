@@ -21,8 +21,10 @@ type Options struct {
 	SaaSName      string
 	// MailSubject   string
 	// MailTemplate  string
-	LenCode int
-	TTLCode time.Duration
+	LenCode   int
+	TTLCode   time.Duration
+	OnAttempt func(string)
+	OnVerify  func(string, bool)
 }
 
 type Passwordless struct {

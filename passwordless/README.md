@@ -28,6 +28,12 @@ func init() {
 		EnableCORS:  needsCORS,
 		TTLCode:     5 * time.Minute,
 		LenCode:     6,
+		OnAttempt: func(email string) {
+			log.Printf("login attempt: email=%q\n", email)
+		},
+		OnVerify: func(email string, pass bool) {
+			log.Printf("login verify: email=%q, pass=%v\n", email, pass)
+		},
 	})
 }
 ```
