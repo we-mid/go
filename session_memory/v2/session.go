@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	session "gitee.com/we-mid/go/session/v2"
+	"gitee.com/we-mid/go/session/v2"
 	"gitee.com/we-mid/go/util"
 )
 
@@ -15,18 +15,18 @@ const (
 )
 
 // 假设的session存储结构，这里使用map和sync.Map在内存中存储
-type SessionStore struct {
-	session.SessionStore
+type SessionStore[T any] struct {
+	session.SessionStore[T]
 	sync.Map
 }
 
-func NewStore() *SessionStore {
-	return &SessionStore{}
+func NewStore[T any]() *SessionStore[T] {
+	return &SessionStore[T]{}
 }
 
 // 添加一个session
-func (s *SessionStore) Add(sessID string, value any, expiry time.Duration) error {
-	s.Store(sessID, &session.SessionData{
+func (s *SessionStore[T]) Set(sessID string, value T, expiry time.Duration) error {
+	s.Store(sessID, &session.SessionData[T]{
 		Value:  value,
 		Expiry: time.Now().Add(expiry),
 	})
@@ -34,25 +34,26 @@ func (s *SessionStore) Add(sessID string, value any, expiry time.Duration) error
 }
 
 // 获取一个session
-func (s *SessionStore) Get(sessID string) (any, bool, error) {
+func (s *SessionStore[T]) Get(sessID string) (T, bool, error) {
+	var zero T
 	val, ok := s.Load(sessID)
 	if !ok {
-		return nil, false, nil
+		return zero, false, nil
 	}
-	data, ok := val.(*session.SessionData)
+	data, ok := val.(*session.SessionData[T])
 	if !ok || data.Expired() {
 		s.Delete(sessID)
-		return nil, false, nil
+		return zero, false, nil
 	}
 	return data.Value, true, nil
 }
 
-func (s *SessionStore) NewID() (string, error) {
+func (s *SessionStore[T]) NewID() (string, error) {
 	var err error
 	for i := 0; i < maxTries; i++ {
 		var exists bool
 		var id string
-		if id, err = util.RandomString(lenSessID); err != nil {
+		if id, err = util.RandomBase64(lenSessID); err != nil {
 			continue
 		}
 		_, exists, err = s.Get(id)
