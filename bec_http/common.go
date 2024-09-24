@@ -5,7 +5,6 @@ import (
 	"net/http"
 )
 
-type Handler func(http.ResponseWriter, *http.Request)
 type Logic[T any] func(w http.ResponseWriter, r *http.Request) (T, error)
 type LogicStream func(w http.ResponseWriter, r *http.Request, onBytes func([]byte)) error
 

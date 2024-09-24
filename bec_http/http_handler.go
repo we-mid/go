@@ -8,7 +8,7 @@ import (
 	"gitee.com/we-mid/go/util"
 )
 
-func CORSHandlerWrap[T any](logic Logic[T]) Handler {
+func CORSHandlerWrap[T any](logic Logic[T]) http.HandlerFunc {
 	return HandlerWrap[T](func(w http.ResponseWriter, r *http.Request) (T, error) {
 		if err := EnableCORS(w, r); err != nil {
 			return util.ZeroValue[T](), err
@@ -17,7 +17,7 @@ func CORSHandlerWrap[T any](logic Logic[T]) Handler {
 	})
 }
 
-func HandlerWrap[T any](logic Logic[T]) Handler {
+func HandlerWrap[T any](logic Logic[T]) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
 		res, err := logic(w, r)

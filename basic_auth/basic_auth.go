@@ -6,8 +6,6 @@ import (
 	"os"
 )
 
-type HandlerFunc func(http.ResponseWriter, *http.Request)
-
 type User struct {
 	Username string `json:"user"`
 	Password string `json:"pass"`
@@ -33,7 +31,7 @@ func InitFromEnv() error {
 	return nil
 }
 
-func Wrap(next HandlerFunc) HandlerFunc {
+func Wrap(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		user := Check(r)
 		if user == "" { // reject
