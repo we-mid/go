@@ -1,0 +1,19 @@
+Dear User,
+
+Thank you for choosing %s for your needs. As part of our security measures, we require you to verify your account before you can sign in.
+
+Here is your Verification Code: %s
+
+Please enter this code when prompted to complete the verification process:
+%s
+
+Important:
+- This code is valid for a limited time. If it expires, you can request a new one.
+- Do not share this code with anyone. It is for your account security.
+
+If you did not request this code or believe this is an error, please contact us immediately at %s for further assistance.
+
+Thank you for your understanding and cooperation. We look forward to serving you with our SaaS solution.
+
+Best regards,
+%s
