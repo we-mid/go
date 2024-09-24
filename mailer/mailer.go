@@ -74,6 +74,7 @@ func SendMail(body, subject string, toList []mail.Address, from *mail.Address) e
 	if err != nil {
 		return err
 	}
+	defer c.Quit()
 	// Auth
 	if err = c.Auth(auth); err != nil {
 		return err
@@ -92,15 +93,12 @@ func SendMail(body, subject string, toList []mail.Address, from *mail.Address) e
 	if err != nil {
 		return err
 	}
+	defer w.Close()
 	_, err = w.Write([]byte(message))
 	if err != nil {
 		return err
 	}
-	err = w.Close()
-	if err != nil {
-		return err
-	}
-	return c.Quit()
+	return nil
 }
 
 // validateLine checks to see if a line has CR or LF as per RFC 5321.
