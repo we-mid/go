@@ -4,10 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	session_memory "gitee.com/we-mid/go/session_memory/v2"
+	session "gitee.com/we-mid/go/session_memory/v2"
 )
 
-type Options struct {
+type Options[T any] struct {
+	SessionStore *session.SessionStore[T]
 	CookieName   string
 	CookiePath   string
 	CookieSecure bool
@@ -15,31 +16,29 @@ type Options struct {
 }
 
 type Store[T any] struct {
-	Options
-	s *session_memory.SessionStore[T]
+	Options[T]
 }
 
-func NewStore[T any](options Options) *Store[T] {
-	s := session_memory.NewStore[T]()
-	p := &Store[T]{options, s}
+func NewStore[T any](options Options[T]) *Store[T] {
+	p := &Store[T]{options}
 	return p
 }
 
-func (p *Store[T]) Get(r *http.Request) (T, bool, error) {
+func (p *Store[T]) GetFrom(r *http.Request) (T, bool, error) {
 	var zero T
 	cookie, err := r.Cookie(p.CookieName)
 	if err != nil {
 		return zero, false, err
 	}
-	return p.s.Get(cookie.Value)
+	return p.SessionStore.Get(cookie.Value)
 }
 
-func (p *Store[T]) Set(w http.ResponseWriter, value T) error {
-	sessID, err := p.s.NewID()
+func (p *Store[T]) SetTo(w http.ResponseWriter, value T) error {
+	sessID, err := p.SessionStore.NewID()
 	if err != nil {
 		return err
 	}
-	if err := p.s.Set(sessID, value, p.TTLSession); err != nil {
+	if err := p.SessionStore.Set(sessID, value, p.TTLSession); err != nil {
 		return err
 	}
 	http.SetCookie(w, &http.Cookie{

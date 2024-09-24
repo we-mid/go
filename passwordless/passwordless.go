@@ -14,7 +14,7 @@ type codeBinding struct {
 
 // todo: use chaining option pattern
 type Options struct {
-	CookieSession cookiesession.Options
+	CookieSession cookiesession.Options[string]
 	EnableCORS    bool
 	RoutePrefix   string
 	SaaSURL       string

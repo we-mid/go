@@ -27,7 +27,7 @@ func (p *Passwordless) HandleSession(w http.ResponseWriter, r *http.Request) (an
 
 func (p *Passwordless) GetEmail(r *http.Request) (string, error) {
 	// for type string, ok can be ignored
-	email, _, err := p.csStore.Get(r)
+	email, _, err := p.csStore.GetFrom(r)
 	if err != nil && err == http.ErrNoCookie {
 		err = nil // no cookie, ignore
 	}
@@ -35,5 +35,5 @@ func (p *Passwordless) GetEmail(r *http.Request) (string, error) {
 }
 
 func (p *Passwordless) bindEmail(w http.ResponseWriter, email string) error {
-	return p.csStore.Set(w, email)
+	return p.csStore.SetTo(w, email)
 }
