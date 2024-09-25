@@ -3,7 +3,11 @@ package mpwx
 import (
 	"fmt"
 	"log"
+
+	"gitee.com/we-mid/go/util"
 )
+
+var WG = util.GoroutineWaitGroup{}
 
 // non-blocking is appropriate for most case
 // remember to call mpwx.WG.Wait() before process exits

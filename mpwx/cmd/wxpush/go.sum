@@ -1,4 +1,6 @@
-gitee.com/we-mid/go/util v0.0.0-20240912073644-0ef2ca515098 h1:0A8XM7nVBllU1THuuUpoTPJJ4N7vLlE6iu+8qrMc474=
-gitee.com/we-mid/go/util v0.0.0-20240912073644-0ef2ca515098/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
+gitee.com/we-mid/go/mpwx v0.0.0-20240925031647-a885aa12bf40 h1:71dcEej41WpPf30bdJZIyZZOlE+Dhl8dwqEsh9bokBA=
+gitee.com/we-mid/go/mpwx v0.0.0-20240925031647-a885aa12bf40/go.mod h1:KQMFDauXGMg0EcyAf5BVpd/qq3dnEI6r0woIFoSADh0=
+gitee.com/we-mid/go/util v0.0.0-20240924151000-286623e4906f h1:4tIE2lDGOWajf8RKhj3Uu47sHsKQMGdRwLmY9IrVmwc=
+gitee.com/we-mid/go/util v0.0.0-20240924151000-286623e4906f/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
 github.com/joho/godotenv v1.5.1 h1:7eLL/+HRGLY0ldzfGMeQkb7vMd0as4CfYvUVzLqw0N0=
 github.com/joho/godotenv v1.5.1/go.mod h1:f4LDr5Voq0i2e/R5DDNOoa2zzDfwtkZa6DnEwAbqwq4=
