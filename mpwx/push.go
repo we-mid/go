@@ -6,16 +6,22 @@ import (
 )
 
 // non-blocking is appropriate for most case
+// remember to call mpwx.WG.Wait() before process exits
 func (c *MpwxClient) PushToAdminf(format string, a ...any) {
 	text := fmt.Sprintf(format, a...)
 	c.PushToAdmin(text)
 }
 func (c *MpwxClient) PushToAdmin(text string) {
-	go func() {
+	WG.Go(func() {
 		if err := c.pushToAdmin(text); err != nil {
 			log.Println("failed to pushToAdmin:", err)
 		}
-	}()
+	})
+}
+
+// blocking
+func (c *MpwxClient) PushToAdminSync(text string) error {
+	return c.pushToAdmin(text)
 }
 
 // blocking

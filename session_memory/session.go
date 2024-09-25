@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	session "gitee.com/we-mid/go/session/v2"
+	"gitee.com/we-mid/go/session"
 	"gitee.com/we-mid/go/util"
 )
 

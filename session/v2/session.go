@@ -6,7 +6,7 @@ import (
 
 type SessionStore[T any] interface {
 	NewID() (string, error)
-	Add(sessID string, value T, expiry time.Duration) error
+	Set(sessID string, value T, expiry time.Duration) error
 	Get(sessID string) (T, bool, error)
 }
 

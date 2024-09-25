@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"time"
 
-	session "gitee.com/we-mid/go/session_memory/v2"
+	session "gitee.com/we-mid/go/session/v2"
 )
 
 type Options[T any] struct {
-	SessionStore *session.SessionStore[T]
+	SessionStore session.SessionStore[T]
 	CookieName   string
 	CookiePath   string
 	CookieSecure bool
