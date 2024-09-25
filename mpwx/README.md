@@ -46,6 +46,14 @@ err := mp1.SendTemplateMessage(touser, template_id, tMap)
 1. `PushToAdmin`系列函数默认调用协程并打印错误，如希望阻塞并返回错误则应调用`PushToAdminSync`
 2. 由于调用了协程，因此在main函数优雅退出前可以调用`mpwx.WG.Wait`，等待相关协程完成
 
+**命令行工具**
+
+```sh
+go install gitee.com/we-mid/go/mpwx/cmd/wxpush@latest
+ls .env  # 指定相关环境变量
+wxpush "Hello World"
+```
+
 **相关资料**
 
 微信公众号文档：基础消息能力 /模板消息接口
