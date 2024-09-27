@@ -34,6 +34,7 @@ func init() {
 		OnVerify: func(email string, pass bool) {
 			log.Printf("login verify: email=%q, pass=%v\n", email, pass)
 		},
+		TestUsersEnvKey: "", // to be documented
 	})
 }
 ```

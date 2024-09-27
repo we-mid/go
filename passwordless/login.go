@@ -22,7 +22,7 @@ var templateEn string
 
 var (
 	// 基于IP的安全限流 所有passwordless实例共用
-	lAttempt = bec_http.NewIPRateLimit(time.Minute, 1)
+	lAttempt = bec_http.NewIPRateLimit(time.Minute, 3)
 	lVerify  = bec_http.NewIPRateLimit(time.Minute, 10)
 	myErr429 = bec_http.NewStatusErrorf(429, "Please try again later.")
 )
@@ -43,15 +43,26 @@ func (p *Passwordless) HandleVerify(w http.ResponseWriter, r *http.Request) (any
 	if !lVerify.Allow(r) {
 		return nil, myErr429
 	}
+	email, code := req.Email, req.Code
 	var pass bool
-	if b, ok := p.codeMap[req.Email]; ok && b.code == req.Code {
-		pass = true
-		delete(p.codeMap, req.Email)
-		if err := p.bindEmail(w, req.Email); err != nil {
+	if _, ok := p.testUsers[email]; ok { // is test user
+		if c, ok := p.testUsers[email]; ok && c == code {
+			pass = true
+		}
+	} else {
+		if b, ok := p.codeMap[email]; ok && b.code == code {
+			pass = true
+			p.mu.Lock()
+			delete(p.codeMap, email)
+			p.mu.Unlock()
+		}
+	}
+	if pass {
+		if err := p.bindEmail(w, email); err != nil {
 			return nil, err
 		}
 	}
-	go p.OnVerify(req.Email, pass)
+	go p.OnVerify(email, pass)
 
 	return verifyRes{pass}, nil
 }
@@ -68,17 +79,26 @@ func (p *Passwordless) HandleAttempt(w http.ResponseWriter, r *http.Request) (an
 	if !lAttempt.Allow(r) {
 		return nil, myErr429
 	}
-	go p.OnAttempt(req.Email)
+	email := req.Email
+	go p.OnAttempt(email)
 
-	code := util.RandomCode(p.LenCode)
-	binding := codeBinding{code, time.Now().Add(p.TTLCode)}
-	p.mu.Lock()
-	p.codeMap[req.Email] = binding
-	p.mu.Unlock()
-
+	if _, ok := p.testUsers[email]; ok { // is test user
+		return nil, nil // skip to store & send
+	}
+	var code string
+	now := time.Now()
+	if b, ok := p.codeMap[email]; ok && b.expireAt.Add(10*time.Second).After(now) {
+		code = b.code
+	} else {
+		code = util.RandomCode(p.LenCode)
+		binding := codeBinding{code, now.Add(p.TTLCode)}
+		p.mu.Lock()
+		p.codeMap[email] = binding
+		p.mu.Unlock()
+	}
 	contact := mailer.SMTP_USER
 	from := mail.Address{Name: p.SaaSName, Address: contact}
-	to := mail.Address{Address: req.Email}
+	to := mail.Address{Address: email}
 
 	// subject := fmt.Sprintf("Sign-in Verification for %s", saasName)
 	// subject := util.Ternary(p.MailSubject != "", p.MailSubject, subjectEn)
