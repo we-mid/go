@@ -2,6 +2,11 @@
 
 > OCR-图像识别 Go语言SDK+命令行工具
 
+- [x] Languages, 训练数据加速下载及使用步骤
+- [x] Pool, ocr.Scan, ocr.ScanClipboard GoSDK及命令行用法
+- [x] poolSize, ocr.ScanBytes, 命令行系统进程优雅退出及特殊处理
+- [ ] Whitelist
+
 **Tesseract安装**
 
 Tesseract Installation:
