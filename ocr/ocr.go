@@ -48,7 +48,11 @@ func ScanClipboard(languages []string) (string, error) {
 
 func _scan(languages []string, filePath string, isClipboard bool) (string, error) {
 	var err error
-	filePath, err = handleTildy(filePath)
+
+	// todo
+	// filePath, err = handleTildy(filePath)
+	filePath, err = util.Untildify(filePath)
+
 	if err != nil {
 		return "", err
 	}

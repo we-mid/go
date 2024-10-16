@@ -3,7 +3,7 @@ module gitee.com/we-mid/go/ocr
 go 1.21.1
 
 require (
-	gitee.com/we-mid/go/util v0.0.0-20241008021207-c5da89a39d89
+	gitee.com/we-mid/go/util v0.0.0-20241016065234-73d7fa668944
 	github.com/otiai10/gosseract/v2 v2.4.1
 	golang.design/x/clipboard v0.7.0
 )

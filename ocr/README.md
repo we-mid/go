@@ -14,16 +14,17 @@ Troubleshootings: See [we-mid/bec-grpc#troubleshootings](https://github.com/we-m
 
 ```sh
 # 通过gitmirror加速下载gitraw
-gitrawdown () {
-	if [ $# -lt 2 ]
-	then
-		echo "缺少参数"
-		return 1
-	fi
-	local url=$(echo $1 | sed 's|raw.githubusercontent.com|raw.gitmirror.com|')
-	echo "Downloading... $url"
-	echo "=> $2"
-	curl -fL $url > $2
+gitrawdown() {
+    if [ $# -lt 2 ]; then
+        echo "缺少参数"
+        return 1
+    fi
+    local url=$(echo $1 | \
+        sed 's|https://github.com/\(.*\)/\(.*\)/blob/\(.*\)|https://raw.githubusercontent.com/\1/\2/refs/heads/\3|g' | \
+        sed 's|raw.githubusercontent.com|raw.gitmirror.com|')
+    echo "Downloading... $url"
+    echo "=> $2"
+    curl -fL $url > $2
 }
 gitrawdown https://raw... ~/Downloads/testdata_fast/chi_sim.traineddata
 ```
@@ -43,7 +44,7 @@ gitrawdown https://raw.githubusercontent.com/tesseract-ocr/tessdata_fast/refs/he
 go install gitee.com/we-mid/go/ocr/cmd/ocrscan@latest
 
 # 如果指定为自己下载的训练数据
-TESSDATA_PREFIX=~/Downloads/tessdata_fast
+export TESSDATA_PREFIX=~/Downloads/tessdata_fast
 
 # 从文件路径读取图片
 ocrscan -l chi_sim,eng '~/Desktop/截屏2024-10-16 10.23.27.png'
