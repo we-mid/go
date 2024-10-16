@@ -10,8 +10,10 @@ import (
 )
 
 func main() {
-	teardown := ocr.Setup()
+	teardown := ocr.Setup(1) // poolSize
 	defer teardown()
+
+	// todo handle signal and gracefully quiting
 
 	isClipboard := flag.Bool("c", false, "Whether to read from clipboard")
 	langStr := flag.String("l", "", "Languages joined by `,`")
@@ -31,7 +33,7 @@ func main() {
 		text, err = ocr.Scan(languages, filePath)
 	}
 	if err != nil {
-		log.Println("[ocr] error:", err)
+		log.Fatalln("[ocr] error:", err)
 	}
 	fmt.Println(text)
 }
