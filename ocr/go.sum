@@ -1,5 +1,3 @@
-gitee.com/we-mid/go/util v0.0.0-20241008021207-c5da89a39d89 h1:Iy7ZC9PxIkRw59luG3xYK4Xw7qKs8CUDPFSkzsNr0YM=
-gitee.com/we-mid/go/util v0.0.0-20241008021207-c5da89a39d89/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
 gitee.com/we-mid/go/util v0.0.0-20241016065234-73d7fa668944 h1:KmZDTc6nNU2bVSbZdkoZLjwzpQ8TqmP9A4z/f4J/jCY=
 gitee.com/we-mid/go/util v0.0.0-20241016065234-73d7fa668944/go.mod h1:aFYuv8Q+bDgkV2m1EuVv+MP8i1iaDTyjHAAmG+INBrA=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=

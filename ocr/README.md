@@ -20,7 +20,7 @@ gitrawdown() {
         return 1
     fi
     local url=$(echo $1 | \
-        sed 's|https://github.com/\(.*\)/\(.*\)/blob/\(.*\)|https://raw.githubusercontent.com/\1/\2/refs/heads/\3|g' | \
+        sed 's|github.com/\(.*\)/\(.*\)/blob/\(.*\)|raw.githubusercontent.com/\1/\2/refs/heads/\3|g' | \
         sed 's|raw.githubusercontent.com|raw.gitmirror.com|')
     echo "Downloading... $url"
     echo "=> $2"
@@ -70,28 +70,18 @@ PC端 ， 41
 **用法：作为Go语言SDK**
 
 ```go
-// ...
 import "gitee.com/we-mid/go/ocr"
 
 func main() {
-	// ...
-	var text string
-	var err error
+	ocrTeardown := ocr.Setup(3) // poolSize
+	defer ocrTeardown()
 
 	// languages can be:
-	// - []
-	// - ["eng"]
-	// - ["chi_sim", "eng"]
-	if *isClipboard {
-		text, err = ocr.ScanClipboard(languages)
-	} else {
-		// ...
-		text, err = ocr.Scan(languages, filePath)
-	}
-	if err != nil {
-		log.Println("[ocr] error:", err)
-	}
-	fmt.Println(text)
+	// https://github.com/tesseract-ocr/tessdata_fast
+	// - []  - ["eng"]  - ["chi_sim", "eng"]
+	text, err := ocr.ScanClipboard(languages)
+	text, err := ocr.ScanBytes(languages, bs)
+	text, err := ocr.Scan(languages, filePath)
 }
 ```
 
