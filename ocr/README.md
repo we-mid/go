@@ -31,7 +31,7 @@ gitrawdown() {
     echo "=> $2"
     curl -fL $url > $2
 }
-gitrawdown https://raw... ~/Downloads/testdata_fast/chi_sim.traineddata
+gitrawdown https://raw... ~/Downloads/tessdata_fast/chi_sim.traineddata
 ```
 
 ```sh

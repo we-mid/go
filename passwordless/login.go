@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/mail"
+	"regexp"
 	"time"
 
 	"gitee.com/we-mid/go/bec_http"
@@ -22,9 +23,10 @@ var templateEn string
 
 var (
 	// 基于IP的安全限流 所有passwordless实例共用
-	lAttempt = bec_http.NewIPRateLimit(time.Minute, 3)
-	lVerify  = bec_http.NewIPRateLimit(time.Minute, 10)
-	myErr429 = bec_http.NewStatusErrorf(429, "Please try again later.")
+	lAttempt        = bec_http.NewIPRateLimit(time.Minute, 3)
+	lVerify         = bec_http.NewIPRateLimit(time.Minute, 10)
+	myErr429        = bec_http.NewStatusErrorf(429, "Please try again later.")
+	errInvalidEmail = bec_http.NewStatusErrorf(400, "Invalid email address.")
 )
 
 type verifyReq struct {
@@ -80,6 +82,9 @@ func (p *Passwordless) HandleAttempt(w http.ResponseWriter, r *http.Request) (an
 		return nil, myErr429
 	}
 	email := req.Email
+	if !isValidEmail(email) {
+		return nil, errInvalidEmail
+	}
 	go p.OnAttempt(email)
 
 	if _, ok := p.testUsers[email]; ok { // is test user
@@ -111,4 +116,12 @@ func (p *Passwordless) HandleAttempt(w http.ResponseWriter, r *http.Request) (an
 
 	err := mailer.SendMail(body, subject, []mail.Address{to}, &from)
 	return nil, err
+}
+
+// 正则表达式匹配标准的电子邮件地址
+var reEmail = regexp.MustCompile(`^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$`)
+
+// isValidEmail 使用正则表达式检查给定的字符串是否符合电子邮件地址的标准格式
+func isValidEmail(email string) bool {
+	return reEmail.MatchString(email)
 }
