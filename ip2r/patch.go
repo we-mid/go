@@ -1,7 +1,9 @@
 package ip2r
 
 import (
+	"fmt"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -37,6 +39,11 @@ func CustomPatch(filename string) error {
 	return nil
 }
 
+const reStrIPv4 = `\d{1,3}(\.\d{1,3}){3}`
+
+var reStrIPv4CIDR = fmt.Sprintf(`%s\/\d{1,2}`, reStrIPv4)
+var reMultiIPv4CIDR = regexp.MustCompile(fmt.Sprintf(`^%s(\,%s)*$`, reStrIPv4CIDR, reStrIPv4CIDR))
+
 // todo: config string => []byte
 func CustomPatchString(config string) {
 	lines := strings.Split(config, "\n")
@@ -60,6 +67,12 @@ func CustomPatchString(config string) {
 			buf = append(buf, [2]uint32{left, right})
 		} else if len(parts) >= 3 {
 			buf = append(buf, [2]uint32{left, right})
+
+			// 扩展：支持末尾追加一个可选的CIDR标记
+			if len(parts) >= 4 && reMultiIPv4CIDR.MatchString(parts[len(parts)-1]) {
+				parts = parts[:len(parts)-1] // remove last
+			}
+
 			region := strings.Join(parts[2:], " ")
 			for _, p := range buf {
 				segs = append(segs, segment{left: p[0], right: p[1], region: region})
