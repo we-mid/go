@@ -5,6 +5,7 @@ import (
 	"os"
 
 	bf "github.com/chyroc/baidufanyi"
+	"github.com/rylans/getlang"
 )
 
 // 通用翻译API接入文档
@@ -41,22 +42,15 @@ func Translate(req *FanyiReq) ([]*bf.TranslateResult, error) {
 }
 
 func CompleteReq(req *FanyiReq) {
-	// TODO: sdk support language=`auto`
-	// TODO: auto detect language from text?
-	if req.From == "" && req.To == "" {
-		req.From = bf.LanguageEn
-		req.To = bf.LanguageZh
-	} else if req.From == "" {
-		if req.To == bf.LanguageEn {
-			req.From = bf.LanguageZh
-		} else {
-			req.From = bf.LanguageEn
-		}
-	} else if req.To == "" {
-		if req.From == bf.LanguageEn {
-			req.To = bf.LanguageZh
-		} else {
+	if req.From == "" {
+		info := getlang.FromString(req.Text)
+		req.From = bf.Language(info.LanguageCode())
+	}
+	if req.To == "" {
+		if req.From == bf.LanguageZh {
 			req.To = bf.LanguageEn
+		} else {
+			req.To = bf.LanguageZh
 		}
 	}
 }

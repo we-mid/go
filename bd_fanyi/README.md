@@ -2,6 +2,8 @@
 
 > 简单易用的 百度翻译 SDK
 
+✅ 2025.2.8 更新：已支持 From语言 传空时，自动识别语言
+
 ```ini
 # .env
 BAIDUFANYI_APP_ID=xxxxxxxx
